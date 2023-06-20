@@ -18,13 +18,13 @@ def solution(files):
                 break
             j+=1
 
-        padding_count = 10 - (j-i)
+        padding_count = 100 - (j-i)
         padding = padding_count * '0'
 
         number = [padding+ file[i:j], file[i:j]]
-        body = file[j:l]
+        tail = file[j:l]
 
-        re_files.append([head, number, body])
+        re_files.append([head, number, tail])
 
     re_files = sorted(re_files, key = lambda x : (x[0][0], x[1][0]))
     answer = []
