@@ -39,10 +39,7 @@ l = int(input())
 
 # 첫 방향 위치
 direction = 2
-answer = 0
 x = y = 0
-lx = ly = 0
-flag = True
 
 times = []
 
@@ -79,13 +76,11 @@ while True:
 
         x = nx
         y = ny
-        answer += 1
 
     # 부딪혔다면 게임을 끝내준다.
     else:
-        flag = False
         break
 
     i+=1
 
-print(answer+1)
+print(i+1)
