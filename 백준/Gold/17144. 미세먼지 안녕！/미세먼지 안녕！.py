@@ -4,9 +4,8 @@ import sys
 import heapq
 import copy
 
-# 어느 방향으로 바람이 부는지 초기화 한다.
 
-
+# 공기 청정기의 위치를 얻어둠
 def getAirLocation():
     global A, r, c
     temp = []
@@ -16,12 +15,9 @@ def getAirLocation():
                 temp.append((i,j))
     return temp
 
+# 바람이 어디로 부는지 구하고 저장한다.
 def initDirection():
     global A, direction, r, c, air
-
-    # 공기청정기 위치는 7로 처리
-    direction[air[0][0]][air[0][1]+1] = 7
-    direction[air[1][0]][air[1][1]+1] = 7
 
     # 공기청정기 상단 처리
     x, y = air[0]
@@ -66,7 +62,8 @@ def initDirection():
 # 미세먼지를 퍼트리고, 결과 배열을 return 한다.
 def spread():
     global A, r, c
-    # -> 각 좌표에 퍼진 값, 그리고 각 좌표에 남은값을 따로 저장해두자.
+    
+    # 각 좌표에 퍼진 값, 그리고 각 좌표에 남은값을 따로 저장해두자.
     res = [[0] * c for _ in range(r)]
 
     for x in range(r):
@@ -121,13 +118,9 @@ direction = [[9] * c for _ in range(r)]
 air = getAirLocation()
 initDirection()
 
-
-
 for i in range(t):
     A = spread()
     blow()
-
-
 
 answer = 0
 for i in range(r):
