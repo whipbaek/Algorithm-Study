@@ -1,5 +1,3 @@
-import heapq
-import itertools
 import sys
 import copy
 from sys import stdin
@@ -12,6 +10,17 @@ def getFromWay(val):
     if val == 2: return 3
     if val == 3: return 2
     return -1
+
+def isBlueFirst(board, x, y, i):
+    global dx, dy
+    while True:
+        if board[x][y] == 'B':
+            return True
+        if board[x][y] == '#':
+            return False
+
+        x += dx[i]
+        y += dy[i]
 
 def dfs(origin, red, blue, way, count):
     global dx, dy, answer
@@ -35,22 +44,9 @@ def dfs(origin, red, blue, way, count):
         r_possible = False
         b_possible = False
 
-        blueFirst = False
-
-        tx, ty = rx, ry
-
-        while True:
-            if board[tx][ty] == 'B':
-                blueFirst = True
-                break
-            if board[tx][ty] == '#':
-                break
-
-            tx += dx[i]
-            ty += dy[i]
 
         # 빨간색 구슬이 이동할려는 위치에 파란 구슬이 있다면 -> 파란구슬부터 이동시켜준다.
-        if blueFirst:
+        if isBlueFirst(board, rx, ry, i):
 
             # 파란구슬 이동처리
             while True:
@@ -150,7 +146,7 @@ def dfs(origin, red, blue, way, count):
 n, m = map(int, input().split())
 original = [list(stdin.readline().rstrip()) for _ in range(n)]
 
-# 하단, 상단, 우, 좌
+# 좌, 우, 하, 상
 dx = [0, 0, 1, -1]
 dy = [-1, 1, 0, 0]
 
