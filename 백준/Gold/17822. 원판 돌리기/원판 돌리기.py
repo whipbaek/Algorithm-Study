@@ -1,19 +1,8 @@
 from sys import stdin
-from collections import deque
-
-'''
-
-0인 경우는 시계 방향, 1인 경우는 반시계 방향이다.
-
-원판에 수가 남아있다면, 인접하면서 수가 같은 것을 찾고, 같은 수를 모두 지운다.
-
-'''
-
 
 n, m, t = map(int, input().split())
 circle = [ list(map(int, stdin.readline().rstrip().split())) for _ in range(n) ]
 methods = [ list(map(int, stdin.readline().rstrip().split())) for _ in range(t) ]
-
 
 for method in methods:
     o, direction, rotate = method
@@ -22,7 +11,7 @@ for method in methods:
     # 배수 구하기
     for i in range(1, n+1):
         if i%o == 0:
-            # 원판의 시작은 1이 아니라 0부터 ~ n-1 설정
+            # 원판 숫자는 1 ~ n 이 아니라 0부터 ~ n-1 설정
             c_list.append(i-1)
 
     # 배수들 회전시켜준다.
@@ -47,11 +36,6 @@ for method in methods:
             circle[c][0:area] = circle[c][rotate:m]
             # 미리 복사해둔 앞 부분을 뒷부분으로 복사
             circle[c][area:m] = temp
-
-    # print('회전 결과')
-    # for c in circle:
-    #     print(c)
-    # print()
 
     # 인접한 값들을 모두 검사해본다.
     st = set()
@@ -91,7 +75,6 @@ for method in methods:
     cnt = 0
     t_sum = 0
 
-
     # 변한게 하나라도 없었다면 평균 구하고 연산 진행한다. (set에 자료가 하나도 없다면)
     if not st:
         for i in range(n):
@@ -101,10 +84,8 @@ for method in methods:
                     t_sum += circle[i][j]
         if cnt == 0:
             continue
+            
         avg = t_sum/cnt
-
-        # print('인접한 수가 없습니다.')
-        # print('평균  :', avg)
 
         for i in range(n):
             for j in range(m):
@@ -113,20 +94,12 @@ for method in methods:
                         circle[i][j] -= 1
                     elif circle[i][j] < avg :
                         circle[i][j] += 1
-
     else:
         while st:
             x, y = st.pop()
             circle[x][y] = 0
 
-
-
-# print('최종 결과')
-# for c in circle:
-#     print(c)
-# print()
-
-# 모든 프로레스가 끝났다면 합계를 구해준다.
+# 모든 프로세스가 끝났다면 합계를 구해준다.
 answer = 0
 for i in range(n):
     for j in range(m):
