@@ -14,8 +14,6 @@ def restore(time_int):
     return h+':'+m
     
 def solution(n, t, m, timetable):
-    answer = ''
-    
     busList = []
     # 9시부터 t분 간격으로 n개의 셔틀이 도착하며, m명을 태울 수 있다.
     for i in range(n):
@@ -23,10 +21,8 @@ def solution(n, t, m, timetable):
         if val <= transform("23:59"):
             busList.append(val)
     
-    transCrew = []
-    for crew in timetable: transCrew.append(transform(crew))
+    transCrew = [transform(crew) for crew in timetable]
     transCrew.sort()
-    busList.sort()
 
     crewIdx = 0
     # 버스를 하나씩 돌면서 사람을 채운다.
@@ -51,8 +47,7 @@ def solution(n, t, m, timetable):
         if i == len(busList)-1:
             # 그 버스가 만차라면, 그 버스를 마지막에 탄 사람 -1분에 오면 된다.
             if len(temp) == m: 
-                answer = restore(temp[-1]-1)
+                return restore(temp[-1]-1)
             # 만약 한자리라도 비어있다면 버스가 도착하는 시간에 오면 된다.
             else: 
-                answer = restore(busList[-1])
-    return answer
+                return restore(busList[-1])
