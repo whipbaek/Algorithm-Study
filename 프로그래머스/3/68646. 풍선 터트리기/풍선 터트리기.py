@@ -9,21 +9,18 @@ def solution(a):
     # minVal 왼쪽
     rangeMin = sys.maxsize
     while a[front] != minVal:
-        if a[front] > rangeMin:  # 문제 발생!
-            front += 1
-        else:  # 내가 더 작다면
+        if a[front] < rangeMin:  # 문제 발생!
             rangeMin = a[front]
-            front += 1
             answer += 1
+        front += 1
+            
 
     # minVal 오른쪽
     rangeMin = sys.maxsize
     while a[back] != minVal:
-        if a[back] > rangeMin:
-            back -= 1
-        else:
+        if a[back] < rangeMin:
             rangeMin = a[back]
-            back -= 1
             answer += 1
-
+        back -= 1
+            
     return answer
