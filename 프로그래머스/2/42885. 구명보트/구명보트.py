@@ -10,9 +10,9 @@ def solution(people, limit):
         now = people[front]
         front +=1
         
-        if front > back:
-            answer +=1
-            break
+        # if front > back:
+        #     answer +=1
+        #     break
         
         if now + people[back] <= limit:
             back -=1
