@@ -7,16 +7,16 @@ import java.io.*;
 
 public class Main {
 
-    public static Long n;
-    public static List<Long> heights = new ArrayList<>();
+    public static Integer n;
+    public static List<Integer> heights = new ArrayList<>();
     public static Stack<Building> stack = new Stack<>();
     public static Long answer = 0L;
 
     public class Building {
         public Integer number;
-        public Long height;
+        public Integer height;
 
-        public Building(Integer number, Long height) {
+        public Building(Integer number, Integer height) {
             this.number = number;
             this.height = height;
         }
@@ -51,10 +51,10 @@ public class Main {
     public void inputProcess() throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        n = Long.parseLong(br.readLine());
+        n = Integer.parseInt(br.readLine());
 
         for (int i = 0; i < n; i++) {
-            heights.add(Long.parseLong(br.readLine()));
+            heights.add(Integer.parseInt(br.readLine()));
         }
     }
 
