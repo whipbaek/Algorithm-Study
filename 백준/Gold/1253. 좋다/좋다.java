@@ -15,12 +15,12 @@ public class Main {
                 .sorted()
                 .collect(Collectors.toList());
 
-        if(numbers.size() < 3) return answer;
+        if(n < 3) return answer;
 
 
-        for (int i = 0; i < numbers.size(); i++) {
+        for (int i = 0; i < n; i++) {
             int front = 0;
-            int back = numbers.size()-1;
+            int back = n-1;
 
             while (true) {
 
