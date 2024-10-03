@@ -12,6 +12,7 @@ public class Main {
         for (int i = 0; i < n; i++) {
             numbers.add(Long.parseLong(br.readLine()));
         }
+        Collections.sort(numbers);
 
         Set<Long> set = new HashSet<>();
         for (int i = 0; i < n; i++) {
@@ -19,21 +20,17 @@ public class Main {
                 set.add(numbers.get(i) + numbers.get(j));
             }
         }
-        Long max = -1L;
-        
+
         for (int i = n - 1; i >= 0; i--) {
             for (int j = i; j >= 0; j--) {
                 if(set.contains(numbers.get(i) - numbers.get(j))){
-                    max = Math.max(max, numbers.get(i));
+                    System.out.println(numbers.get(i));
+                    return;
                 }
             }
         }
 
-        System.out.println(max);
-
-
     }
-
 
     public static void main(String[] args) throws Exception {
         new Main().solution();
