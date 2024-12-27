@@ -1,60 +1,120 @@
 import java.util.*;
 
 class Solution {
-    
-    public int getTarget(PriorityQueue<Integer> pq, Map<Integer, Integer> m){
-        while(pq.peek() != null){
-            // 값이 있으면서, 유효한 값이라면.
-            if(m.get(pq.peek()) == 1){
-                return pq.poll();
-            } 
-            pq.poll();
-        }
-        return 0;
-    }
-    
-    public int[] solution(String[] operations) {
+        static class Node {
+        public int idx;
+        public int val;
 
-        PriorityQueue<Integer> pq_max = new PriorityQueue<>((x, y) -> y - x);
-        PriorityQueue<Integer> pq_min = new PriorityQueue<>();
-        Map<Integer, Integer> m = new HashMap<>();
-        
-        for(String oper : operations){
-            // min pq
-            if(oper.equals("D -1")){
-                while(true){
-                    if(pq_min.peek() == null) break;
-                    if(m.get(pq_min.peek()) == 1) { //유효한 값일 경우.
-                        m.put(pq_min.peek(), 0);
-                        pq_min.poll();
+        public Node(int idx, int val) {
+            this.idx = idx;
+            this.val = val;
+        }
+    }
+
+    public List<Integer> solution(String[] operations) throws Exception {
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        List<Integer> answer = new ArrayList<>();
+
+        PriorityQueue<Node> minQueue = new PriorityQueue<>((o1, o2) -> o1.val - o2.val);
+        PriorityQueue<Node> maxQueue = new PriorityQueue<>((o1, o2) -> o2.val - o1.val);
+
+        Map<Integer, Set<Integer>> map = new HashMap<>();
+        int idx = 1;
+        for (String operation : operations) {
+            String[] splitValue = operation.split(" ");
+            String operator = splitValue[0];
+            int value = Integer.parseInt(splitValue[1]);
+
+            // 데이터 큐에 삽입
+            if (operator.equals("I")) {
+
+                // queue에 동시에 데이터 삽입한다.
+                minQueue.add(new Node(idx, value));
+                maxQueue.add(new Node(idx, value));
+
+                // map key 값이 없는 경우
+                if(!map.containsKey(value)){
+
+                    Set<Integer> set = new HashSet<>();
+                    set.add(idx);
+                    map.put(value, set);
+
+                    idx++;
+                    continue;
+                }
+
+                // map key 값이 있는 경우 idx를 세팅해준다.
+                map.get(value).add(idx);
+                idx++;
+            }
+
+            // 연산일경우 처리
+            if(operator.equals("D")){
+
+                // 최대값 삭제
+                if(value == 1){
+                    while(!maxQueue.isEmpty()){
+                        Node peek = maxQueue.peek();
+
+                        // 해당값의 idx가 없는경우 -> 이미 minQueue 에서 삭제 된 값.
+                        if (!map.get(peek.val).contains(peek.idx)) {
+                            maxQueue.poll();
+                            continue;
+                        }
+
+                        // map내 set에서 없앤다.
+                        map.get(peek.val).remove(peek.idx);
+                        maxQueue.poll();
                         break;
                     }
-                    pq_min.poll(); //유효하지 않은 경우
                 }
-                
-            // max pq
-            } else if(oper.equals("D 1")){
-                while(true){
-                    if(pq_max.peek() == null) break;
-                    if(m.get(pq_max.peek()) == 1) { //유효한 값일 경우.
-                        m.put(pq_max.peek(), 0);
-                        pq_max.poll();
+
+                // 최소값 삭제
+                if(value == -1){
+                    while(!minQueue.isEmpty()){
+                        Node peek = minQueue.peek();
+
+                        // 해당값의 idx가 없는경우 -> 이미 maxQueue 에서 삭제 된 값.
+                        if (!map.get(peek.val).contains(peek.idx)) {
+                            minQueue.poll();
+                            continue;
+                        }
+
+                        // map내 set에서 없앤다.
+                        map.get(peek.val).remove(peek.idx);
+                        minQueue.poll();
                         break;
                     }
-                    pq_max.poll(); //유효하지 않은 경우
                 }
-            } else{
-                Integer val = Integer.parseInt(oper.split(" ")[1]);
-                pq_min.add(val);
-                pq_max.add(val);
-                m.put(val, 1);
             }
         }
 
-        int max_value = getTarget(pq_max, m);
-        int min_value = getTarget(pq_min, m);
-        
-        int[] answer = {max_value, min_value};
+        if(maxQueue.isEmpty() || minQueue.isEmpty()){
+            answer.add(0);
+            answer.add(0);
+            return answer;
+        }
+
+        while(true){
+            if(!map.get(maxQueue.peek().val).contains(maxQueue.peek().idx)){
+                maxQueue.poll();
+                continue;
+            }
+            answer.add(maxQueue.poll().val);
+            break;
+        }
+
+        while(true){
+            if(!map.get(minQueue.peek().val).contains(minQueue.peek().idx)){
+                minQueue.poll();
+                continue;
+            }
+            answer.add(minQueue.poll().val);
+            break;
+        }
+
+
         return answer;
     }
 }
